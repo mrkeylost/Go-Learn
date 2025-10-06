@@ -5,6 +5,9 @@ import (
 	"math"
 )
 
+// Global Const
+const inflationRate = 2.5
+
 func main() {
 	// explicit type
 	// var investmentAmount float64 = 1000
@@ -23,25 +26,74 @@ func main() {
 	var years float64
 	expectedReturnRate :=  5.5
 
-	const inflationRate = 2.5
-
 	// var futureValue = float64(investmentAmount) * math.Pow(1 + (expectedReturnRate) / 100, float64(years))
 
 	// need user input
 	// jangan lupa pake &
-	fmt.Print("Investment Amount : ")
+
+	printText("Investment Amount : ")
+	// fmt.Print("Investment Amount : ")
 	fmt.Scan(&investmentAmount)
 
-	fmt.Print("How long is the investment : ")
+	printText("How long is the investment : ")
+	// fmt.Print("How long is the investment : ")
 	fmt.Scan(&years)
 
-	fmt.Print("Expected Return Rate : ")
+	printText("Expected Return Rate : ")
+	//fmt.Print("Expected Return Rate : ")
 	fmt.Scan(&expectedReturnRate)
 
-	futureValue := investmentAmount * math.Pow(1 + (expectedReturnRate) / 100, years)
+	// futureValue := investmentAmount * math.Pow(1 + (expectedReturnRate) / 100, years)
 
-	futureRealValue := futureValue / math.Pow(1 + inflationRate/100, years)
+	// futureRealValue := futureValue / math.Pow(1 + inflationRate/100, years)
 
-	fmt.Println(futureValue)
-	fmt.Println(futureRealValue)
+	// Ambil hasil multiple return function disini
+	futureValue, futureRealValue := calculateFutureValues(investmentAmount, expectedReturnRate, years) 
+
+	// // formatted string
+	// formattedFV := fmt.
+	// 
+	// Sprintf("Future Value : %.2f\n", futureValue)
+	// formattedFRV := fmt.Sprintf("Future Value : %.2f\n", futureRealValue)
+
+	// fmt.Println("Future Value : ",futureValue)
+	// fmt.Println("Future Value After Inflation : ", futureRealValue)
+
+	fmt.Printf("Future Value : %.2f\n", futureValue)
+	fmt.Printf("Future Value : %.2f\n", futureRealValue)
+
+	// fmt.Print(formattedFV, formattedFRV)
+
+	// fmt.Printf(`Future Value : %.2f
+	// Future Value : %.2f`, futureValue, futureRealValue)
+}
+
+// functions
+
+func printText(text string){
+	fmt.Print(text)
+} 
+
+// return multiple values from function
+// func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (float64, float64) {
+
+// 	fv := investmentAmount * math.Pow(1 + (expectedReturnRate) / 100, years)
+
+// 	rfv := fv / math.Pow(1 + inflationRate/100, years)
+
+// 	return  fv, rfv
+// }
+
+// alternate syntax 
+func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (fv float64, rfv float64) {
+
+	fv = investmentAmount * math.Pow(1 + (expectedReturnRate) / 100, years)
+
+	rfv = fv / math.Pow(1 + inflationRate/100, years)
+
+	// prefer gini aj biar keliatan yang direturn
+	return  fv, rfv
+
+	// otomatis return 2 data yang dibracket 2
+	// return
 }
