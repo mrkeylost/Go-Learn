@@ -2,17 +2,54 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"errors"
 )
+
+// Goals
+// validate user input
+// shows error message and exit if invalid input is provided
+// no negative numbers
+// no 0
+// Store calculated result into file
+
+func saveToFile (EBT, profit, ratio float64) {
+	result := fmt.Sprintf("EBT : %.2f\nProfit : %.2f\nRatio : %.2f", EBT, profit, ratio)
+
+	os.WriteFile("result.txt", []byte(result), 0644)
+}
 
 func main() {
 	var revenue, expenses float64
 	taxRate := 11.0
+	var err error
 
-	revenue = inputText("Revenue : ")
-	expenses = inputText("Expenses : ")
-	taxRate = inputText("Tax Rate : ")
+	revenue, err = inputText("Revenue : ")
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("----------------")
+		return
+	}
+
+	expenses, err = inputText("Expenses : ")
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("----------------")
+		return
+	}
+
+	taxRate, err = inputText("Tax Rate : ")
+	if err != nil {
+		fmt.Println("ERROR")
+		fmt.Println(err)
+		fmt.Println("----------------")
+		return
+	}
 
 	EBT, profit, ratio := calculate(revenue, expenses, taxRate)
+	saveToFile(EBT, profit, ratio)
 
 	// EBT := revenue - expenses
 	// profit := EBT - (EBT * (taxRate / 100))
@@ -30,13 +67,17 @@ func main() {
 	fmt.Printf("Ratio : %.2f\n", ratio)
 }
 
-func inputText(text string) float64 {
+func inputText(text string) (float64, error) {
 	var userInput float64
 
 	fmt.Print(text)
 	fmt.Scan(&userInput)
 
-	return userInput
+	if(userInput < 0){
+		return 0, errors.New("Invalid Item")	
+	}
+
+	return userInput, nil
 }
 
 func calculate(revenue, expenses, taxRate float64) (ebt, profit, ratio float64) {
