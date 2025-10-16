@@ -1,43 +1,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"os"
-	"strconv"
+
+	".example/bank/fileops"
+	"github.com/pallinder/go-randomdata"
 )
 
 const accountBalanceFile = "balance.txt"
 
-func getBalanceFromFile() (float64, error) {
-	// _ dipake buat mau handle value, tapi belom mau dipake
-	// kalo pake variable, bakal ada error karena unused
-	data, err := os.ReadFile(accountBalanceFile)
-
-	if err != nil {
-		return 1000, errors.New("Failed to read file.")
-	}
-
-	balanceText := string(data)
-	// 2 params
-	balance, err := strconv.ParseFloat(balanceText, 64)
-
-	if err != nil {
-		return 1000, errors.New("Failed to parse stored balance value.")
-	}
-
-	return balance, nil
-}
-
-func saveBalanceToFile(balance float64) {
-	balanceText := fmt.Sprint(balance)
-	
-	// 0644 : file permission
-	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
-}
-
 func main() {
-	var accountBalance, err = getBalanceFromFile()
+	var accountBalance, err = fileops.GetFloatFromFile(accountBalanceFile)
 
 	if(err != nil){
 		fmt.Println("ERROR")
@@ -49,14 +22,11 @@ func main() {
 	}
 
 	fmt.Println("Welcome to Go Bank!")
+	fmt.Println("Reach us 24/7, ", randomdata.PhoneNumber())
 
 	// bakal jalan terus
 	for {
-		fmt.Println("What do you want to do")
-		fmt.Println("1. Check the Balance")
-		fmt.Println("2. Deposit Money")
-		fmt.Println("3. Withdraw Money")
-		fmt.Println("4. Exit")
+		presentOption()
 	
 		var choice int
 		fmt.Print("Your Choice : ")
@@ -126,7 +96,7 @@ func main() {
 			accountBalance += depositAmount
 			
 			fmt.Println("Current Account Balance: ", accountBalance)
-			saveBalanceToFile(accountBalance)
+			fileops.SaveFloatToFile(accountBalance, accountBalanceFile)
 		case 3:
 			var withdrawAmount float64
 	
@@ -145,7 +115,7 @@ func main() {
 				accountBalance -= withdrawAmount
 	
 				fmt.Println("Current Account Balance: ", accountBalance)
-				saveBalanceToFile(accountBalance)
+				fileops.SaveFloatToFile(accountBalance, accountBalanceFile)
 			}
 
 		default:
@@ -156,8 +126,4 @@ func main() {
 			return
 		}
 	}
-}
-
-func CheckTheBalance () {
-
 }
