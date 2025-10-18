@@ -30,6 +30,8 @@ func main() {
 	
 		var choice int
 		fmt.Print("Your Choice : ")
+
+		// &schoice adalah pointer ke variable choice
 		fmt.Scan(&choice)
 	
 		// wantsCheckBalance := choice == 1
