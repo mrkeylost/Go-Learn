@@ -82,6 +82,28 @@ func outputData(data Outputtable) error {
 
 // semua value bisa dipakai disini
 func printSomething(value interface{}) {	
+
+	// bisa dipake buat cek type input
+	// misal, cek integer
+	// return value sama bool apakah valuenya sesuai type
+	typedValue, ok := value.(int) 
+	if !ok {
+		fmt.Println(typedValue + 1)
+		return
+   	}
+
+	floatVal, ok := value.(float64)
+	if !ok {
+		fmt.Println(floatVal + 1.0)
+		return 
+	}
+
+	stringVal, ok := value.(string)
+	if !ok {
+		fmt.Println(stringVal)
+		return
+	}
+
 	// type switches
 	// conditional statement berdasarkan type dari value
 	// switch value.(type) {
